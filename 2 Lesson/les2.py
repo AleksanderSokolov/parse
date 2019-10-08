@@ -20,6 +20,8 @@ def req_ads(url):
     except IndexError:
         price = None
     result = {'title': soup.head.title.text,
+              'name': soup.body.findAll('div', attrs={'class': 'seller-info-name js-seller-info-name'})[0].findAll('a')[0].getText(),
+              'name_url': soup.body.findAll('div', attrs={'class': 'seller-info-name js-seller-info-name'})[0].findAll('a')[0].attrs.get('href'),
               'price': int(price) if price and price.isdigit else None,
               'url': response.url,
               'params': [tuple(itm.text.split(':')) for itm in
@@ -39,15 +41,17 @@ ads = body.findAll('div', attrs={'data-marker': 'bx-recommendations-block-item'}
 urls = [f'{base_url}{itm.find("a").attrs["href"]}' for itm in ads]
 
 collection = database.avito
+collection.drop()
 # collection.insert_many(list(map(req_ads, urls)))
 
 for itm in urls:
-    time.sleep(random.randint(1, 5))
+    time.sleep(random.randint(1, 2))
     result = req_ads(itm)
     collection.insert_one(result)
 
-#
-print(1)
-
 for x in collection.find():
   print(x)
+
+# print database statistics
+print(database.command("collstats", "events"))
+print(database.command("dbstats"))

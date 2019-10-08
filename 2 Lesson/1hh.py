@@ -49,8 +49,9 @@ def req_ads_sj():
         except IndexError:
             salary=None
 
-        nameColection = vacancy.findAll('a', attrs={'class': '_3mfro CuJz5 PlM3e _2JVkc _3LJqf'})
-        for x in nameColection:
+        nameColection = vacancy.findAll('div', attrs={'class': '_3mfro CuJz5 PlM3e _2JVkc _3LJqf'})
+
+        for x in vacancy.contents():
             name = name+x.findAll('a', attrs={'class': '_1rS-s'}).text
         result = {'name': name,
                   'salary': salary,
