@@ -22,6 +22,7 @@ def req_ads(url):
     result = {'title': soup.head.title.text,
               'name': soup.body.findAll('div', attrs={'class': 'seller-info-name js-seller-info-name'})[0].findAll('a')[0].getText(),
               'name_url': soup.body.findAll('div', attrs={'class': 'seller-info-name js-seller-info-name'})[0].findAll('a')[0].attrs.get('href'),
+              #'phone': soup.body.findAll('div', attrs={'class': 'item-phone-big-number js-item-phone-big-number'})[0].findAll('img')[0].attrs.get('src').encode("base64"),
               'price': int(price) if price and price.isdigit else None,
               'url': response.url,
               'params': [tuple(itm.text.split(':')) for itm in
